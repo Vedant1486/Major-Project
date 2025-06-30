@@ -1,3 +1,6 @@
+<!-- DEBUG: currUser = <% if (typeof currUser !== 'undefined') { %><%= currUser %><% } else { %>undefined<% } %> -->
+
+
 <style>
   .search-btn{
     background-color: #fe424d;
@@ -41,11 +44,13 @@
         </div>
         <div class="navbar-nav ms-auto">
           <a class="nav-link" href="/listings/new">Airbnb Your Home</a>
-          <% if(!currUser) { %>
+          <% if (typeof currUser === "undefined" || !currUser) { %>
+
             <a class="nav-link" href="/signup"><b>Sign up</b></a>
             <a class="nav-link" href="/login"><b>Login</b></a>
            <% } %>
-           <% if(currUser) { %>
+           <% if (typeof currUser !== "undefined" && currUser) { %>
+
           <a class="nav-link" href="/logout"><b>Log out</b></a>
           <% } %>
         </div>
