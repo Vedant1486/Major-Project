@@ -34,12 +34,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // Database connection
-const dbUrl = process.env.ATLASDB_URL;
-
-if (!dbUrl) {
-  console.error("ATLASDB_URL is not defined in environment variables!");
-  process.exit(1);
-}
+const dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
 async function main() {
   await mongoose.connect(dbUrl);
@@ -48,7 +43,6 @@ main().then(() => {
   console.log("Connected to DB");
 }).catch(err => {
   console.error("DB connection error:", err);
-  process.exit(1);
 });
 
 // Mongo store
