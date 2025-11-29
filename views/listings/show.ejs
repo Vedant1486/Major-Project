@@ -1,40 +1,309 @@
 <%- layout("layouts/boilerplate") %>
 
+<style>
+    .show-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    .show-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 0.5rem;
+    }
+
+    .show-subtitle {
+        color: #666;
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .show-img-container {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        margin-bottom: 2rem;
+        height: 350px;
+    }
+
+    .show-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .show-img:hover {
+        transform: scale(1.05);
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .info-main {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .info-sidebar {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 100px;
+        height: fit-content;
+    }
+
+    .price-box {
+        text-align: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #fe424d 0%, #ff6b6b 100%);
+        color: white;
+        border-radius: 15px;
+        margin-bottom: 1.5rem;
+    }
+
+    .price-amount {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .price-label {
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+
+    .info-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
+        margin: 0.5rem 0.5rem 0.5rem 0;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .description-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #555;
+        margin: 1.5rem 0;
+    }
+
+    .owner-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 15px;
+        margin: 1.5rem 0;
+    }
+
+    .owner-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .owner-details h5 {
+        margin: 0;
+        color: #222;
+        font-weight: 600;
+    }
+
+    .owner-details p {
+        margin: 0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .btn-action {
+        flex: 1;
+        padding: 1rem;
+        border-radius: 15px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        display: block;
+    }
+
+    .btn-edit {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .btn-edit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+
+    .btn-delete {
+        background: linear-gradient(135deg, #ff6b6b 0%, #fe424d 100%);
+        color: white;
+    }
+
+    .btn-delete:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(254, 66, 77, 0.4);
+    }
+
+    .review-section {
+        background: white;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        margin-top: 2rem;
+    }
+
+    .review-card {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .review-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .review-author {
+        font-weight: 700;
+        color: #667eea;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .section-title::before {
+        content: "";
+        width: 5px;
+        height: 30px;
+        background: linear-gradient(135deg, #fe424d 0%, #667eea 100%);
+        border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .info-sidebar {
+            position: relative;
+            top: 0;
+        }
+    }
+</style>
+
 <script>
     const mapToken = "<%= process.env.MAP_TOKEN %>";
     const listing = <%- JSON.stringify(listing) %>;
 </script>
 
-<div class="row mt-4">
-    <div class="col-8 offset-2">
-        <h3><%= listing.title %></h3>
-        <div class="card show-card listing-card">
-            <img src="<%= listing.image && listing.image.url ? listing.image.url : '/images/default.jpg' %>" class="card-img-top show-img" alt="listing_image">
-            <div class="card-body">
-                <p class="card-text">Owned by <i><%= listing.owner.username %></i></p>
-                <p class="card-text"><%= listing.description %></p>
-                <p class="card-text">&#8377; <%= Number(listing.price).toLocaleString("en-IN") %></p>
-                <p class="card-text"><%= listing.location %></p>
-                <p class="card-text"><%= listing.country %></p>
-            </div>
-        </div>
-
-        <% if (currUser && listing.owner._id.equals(currUser._id)) { %>
-            <div class="btns mt-3">
-                <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark me-2">Edit</a>
-                <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" style="display:inline;">
-                    <button class="btn btn-dark">Delete</button>
-                </form>
-            </div>
+<div class="show-container">
+    <h1 class="show-title"><%= listing.title %></h1>
+    <div class="show-subtitle">
+        <span><i class="fas fa-map-marker-alt" style="color: #fe424d;"></i> <%= listing.location %>, <%= listing.country %></span>
+        <% if (listing.category) { %>
+            <span class="info-badge"><i class="fas fa-tag"></i> <%= listing.category %></span>
         <% } %>
     </div>
 
-    <div class="col-8 offset-2 mb-3">
-        <% if (currUser) { %>
-            <hr class="mt-4" />
-            <h4>Leave a Review</h4>
+    <div class="show-img-container">
+        <img src="<%= listing.image && listing.image.url ? listing.image.url : '/images/default.jpg' %>" class="show-img" alt="<%= listing.title %>">
+    </div>
+
+    <div class="info-grid">
+        <div class="info-main">
+            <div class="owner-info">
+                <div class="owner-avatar">
+                    <%= listing.owner.username.charAt(0).toUpperCase() %>
+                </div>
+                <div class="owner-details">
+                    <h5>Hosted by <%= listing.owner.username %></h5>
+                    <p>Property Owner</p>
+                </div>
+            </div>
+
+            <h3 class="section-title">About this place</h3>
+            <p class="description-text"><%= listing.description %></p>
+
+            <% if (currUser && listing.owner._id.equals(currUser._id)) { %>
+                <div class="action-buttons">
+                    <a href="/listings/<%= listing._id %>/edit" class="btn-action btn-edit">
+                        <i class="fas fa-edit"></i> Edit Listing
+                    </a>
+                    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" style="flex: 1; margin: 0;">
+                        <button type="submit" class="btn-action btn-delete" style="width: 100%;">
+                            <i class="fas fa-trash"></i> Delete Listing
+                        </button>
+                    </form>
+                </div>
+            <% } %>
+        </div>
+
+        <div class="info-sidebar">
+            <div class="price-box">
+                <div class="price-amount">₹<%= Number(listing.price).toLocaleString("en-IN") %></div>
+                <div class="price-label">per night</div>
+            </div>
+            <div style="text-align: center; color: #666;">
+                <i class="fas fa-info-circle"></i> Taxes may apply
+            </div>
+        </div>
+    </div>
+
+    <% if (currUser) { %>
+        <div class="review-section">
+            <h3 class="section-title">Leave a Review</h3>
             <form action="/listings/<%= listing._id %>/reviews" method="POST" novalidate class="needs-validation">
-                <div class="mb-3 mt-3">
+                <div class="mb-3">
                     <label for="rating" class="form-label">Rating</label>
                     <fieldset class="starability-slot">
                         <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
@@ -51,49 +320,48 @@
                     </fieldset>
                 </div>
 
-                <div class="mb-3 mt-3">
+                <div class="mb-3">
                     <label for="comment" class="form-label">Comments</label>
                     <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
                     <div class="invalid-feedback">Please add some comments for the review</div>
                 </div>
 
-                <div class="mb-3 mt-3">
-                    <button class="btn btn-outline-dark">Submit</button>
-                </div>
+                <button type="submit" class="btn btn-dark" style="width: 100%; padding: 1rem;">
+                    <i class="fas fa-paper-plane"></i> Submit Review
+                </button>
             </form>
-        <% } %>
-    </div>
-
-    <% if (listing.reviews.length > 0) { %>
-        <div class="col-8 offset-2 mb-4">
-            <hr />
-            <h4>All Reviews</h4>
-            <div class="row">
-                <% for (let review of listing.reviews) { %>
-                    <div class="card col-5 ms-3 mb-3">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <% if (review.author) { %>
-                                    @<%= review.author.username %>
-                                <% } else { %>
-                                    <em>Unknown User</em>
-                                <% } %>
-                            </div>
-                            <p class="card-text"><%= review.comment %></p>
-                            <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
-                        </div>
-                        <form class="mb-3 mt-2" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                            <button class="btn btn-sm btn-dark">Delete</button>
-                        </form>
-                    </div>
-                <% } %>
-            </div>
         </div>
     <% } %>
 
-    <div class="col-8 offset-2 mb-3">
-        <h3>Where You'll be</h3>
-        <div id="map"></div>
+    <% if (listing.reviews.length > 0) { %>
+        <div class="review-section">
+            <h3 class="section-title">Reviews</h3>
+            <% for (let review of listing.reviews) { %>
+                <div class="review-card">
+                    <div class="review-author">
+                        <% if (review.author) { %>
+                            <i class="fas fa-user-circle"></i> <%= review.author.username %>
+                        <% } else { %>
+                            <em>Unknown User</em>
+                        <% } %>
+                    </div>
+                    <p class="starability-result" data-rating="<%= review.rating %>" style="margin: 0.5rem 0;"></p>
+                    <p style="color: #555; margin: 1rem 0;"><%= review.comment %></p>
+                    <% if (currUser && review.author && review.author._id.equals(currUser._id)) { %>
+                        <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" style="display: inline;">
+                            <button class="btn btn-sm btn-danger" style="border-radius: 20px; padding: 0.5rem 1rem;">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    <% } %>
+                </div>
+            <% } %>
+        </div>
+    <% } %>
+
+    <div class="review-section">
+        <h3 class="section-title">Where You'll Be</h3>
+        <div id="map" style="border-radius: 15px; overflow: hidden;"></div>
     </div>
 </div>
 

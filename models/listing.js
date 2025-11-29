@@ -22,6 +22,10 @@ const listingSchema = new mongoose.Schema({
   },
   location: String,
   country: String,
+  category: {
+    type: String,
+    enum: ["Trending", "Rooms", "Iconic Cities", "Mountains", "Castles", "Amazing Pools", "Camping", "Farms", "Arctic", "Domes", "Boats"],
+  },
   geometry: {
     type: {
       type: String,

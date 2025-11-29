@@ -1,15 +1,87 @@
-<div class="container mt-4">
-  <% if (typeof success !== "undefined" && success.length > 0) { %>
-    <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
-      <%= success %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <% } %>
+<style>
+  .flash-message {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+    max-width: 500px;
+    animation: slideIn 0.3s ease-out;
+  }
 
-  <% if (typeof error !== "undefined" && error.length > 0) { %>
-    <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
-      <%= error %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <% } %>
-</div>
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+  }
+
+  .flash-message.fade-out {
+    animation: slideOut 0.3s ease-out forwards;
+  }
+
+  .alert {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: none;
+    border-radius: 10px;
+  }
+
+  .alert-success {
+    background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+    color: white;
+  }
+
+  .alert-danger {
+    background: linear-gradient(135deg, #fe424d 0%, #ff6b6b 100%);
+    color: white;
+  }
+
+  .btn-close {
+    filter: brightness(0) invert(1);
+  }
+</style>
+
+<% if (typeof success !== "undefined" && success.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show flash-message" role="alert">
+    <strong><i class="fas fa-check-circle"></i> Success!</strong> <%= success %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<% if (typeof error !== "undefined" && error.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show flash-message" role="alert">
+    <strong><i class="fas fa-exclamation-circle"></i> Error!</strong> <%= error %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<script>
+  // Auto-dismiss flash messages after 2 seconds
+  document.addEventListener('DOMContentLoaded', function() {
+    const flashMessages = document.querySelectorAll('.flash-message');
+    
+    flashMessages.forEach(function(message) {
+      setTimeout(function() {
+        message.classList.add('fade-out');
+        setTimeout(function() {
+          message.remove();
+        }, 300);
+      }, 2000);
+    });
+  });
+</script>

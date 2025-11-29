@@ -131,3 +131,57 @@ module.exports.destroyListing = async (req, res) => {
         res.redirect("/listings");
     }
 };
+
+// Search listings
+module.exports.searchListings = async (req, res) => {
+    try {
+        const searchQuery = req.query.q;
+        if (!searchQuery || searchQuery.trim() === "") {
+            req.flash("error", "Please enter a search term.");
+            return res.redirect("/listings");
+        }
+
+        const allListings = await Listing.find({
+            $or: [
+                { title: { $regex: searchQuery, $options: "i" } },
+                { location: { $regex: searchQuery, $options: "i" } },
+                { country: { $regex: searchQuery, $options: "i" } },
+                { description: { $regex: searchQuery, $options: "i" } }
+            ]
+        });
+
+        if (allListings.length === 0) {
+            req.flash("error", `No listings found for "${searchQuery}"`);
+            return res.redirect("/listings");
+        }
+
+        res.render("listings/index", { allListings });
+    } catch (err) {
+        console.error("SEARCH ERROR:", err);
+        req.flash("error", "Error searching listings.");
+        res.redirect("/listings");
+    }
+};
+
+// Filter listings by category
+module.exports.filterListings = async (req, res) => {
+    try {
+        const { category } = req.query;
+        if (!category) {
+            return res.redirect("/listings");
+        }
+
+        const allListings = await Listing.find({ category: category });
+
+        if (allListings.length === 0) {
+            req.flash("error", `No listings found in ${category} category`);
+            return res.redirect("/listings");
+        }
+
+        res.render("listings/index", { allListings });
+    } catch (err) {
+        console.error("FILTER ERROR:", err);
+        req.flash("error", "Error filtering listings.");
+        res.redirect("/listings");
+    }
+};

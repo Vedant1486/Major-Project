@@ -34,7 +34,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // Database connection
-const dbUrl = process.env.ATLASDB_URL;
+const dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/wanderlust";
 
 async function main() {
   await mongoose.connect(dbUrl);
@@ -105,6 +105,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(8080, () => {
-  console.log("Server running on http://localhost:8080");
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -1,59 +1,212 @@
-<!-- DEBUG: currUser = <% if (typeof currUser !== 'undefined') { %><%= currUser %><% } else { %>undefined<% } %> -->
-
-
 <style>
-  .search-btn{
-    background-color: #fe424d;
-    color: #fff;
-    border-radius: 25px;
-    padding: 0 1rem 0 1rem;
+  .navbar {
+    padding: 0.8rem 2rem;
+    margin-bottom: 1rem;
   }
 
-  .search-btn:hover{
-    background-color: #fe424d;
-    color: #fff;
+  .navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #ef4444 !important;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.3s ease;
   }
 
-  .search-btn i {
-     display: inline;
-     margin-right: 0.5rem;
+  .navbar-brand:hover {
+    transform: scale(1.05);
   }
-  .search-inp{
+
+  .navbar-brand i {
+    font-size: 2rem;
+  }
+
+  .search-container {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 2rem;
+  }
+
+  .search-form {
+    display: flex;
+    align-items: center;
+    background: #f7f7f7;
+    border-radius: 50px;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+  }
+
+  .search-form:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .search-form:focus-within {
+    background: white;
+    border-color: #222;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .search-inp {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    flex: 1;
+    color: #222;
+  }
+
+  .search-inp::placeholder {
+    color: #999;
+  }
+
+  .search-btn {
+    background: #dc3434;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .search-btn:hover {
+    background: #c92a2a;
+    transform: scale(1.05);
+  }
+
+  .nav-link {
+    color: #222 !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
     border-radius: 25px;
-    padding: 0.5rem 3rem 0.5rem 3rem;
-    font-size: 01rem;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+  }
+
+  .nav-link:hover {
+    background: #f7f7f7;
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .host-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white !important;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .host-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    color: white !important;
+  }
+
+  .host-link i {
+    font-size: 1.1rem;
+  }
+
+  .btn-auth {
+    padding: 0.6rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border: none;
+  }
+
+  .btn-login {
+    background: white;
+    color: #222;
+    border: 1px solid #e0e0e0;
+  }
+
+  .btn-login:hover {
+    background: #f7f7f7;
+    border-color: #222;
+  }
+
+  .btn-signup {
+    background: #dc3434;
+    color: white;
+  }
+
+  .btn-signup:hover {
+    background: #c92a2a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 52, 52, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .search-container {
+      margin: 1rem 0;
+      max-width: 100%;
+    }
   }
 </style>
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+
+<nav class="navbar navbar-expand-lg sticky-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >
+      <a class="navbar-brand" href="/listings">
+        <i class="fa-solid fa-plane-departure"></i>
+        wanderlust
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-         
-          <a class="nav-link" href="/listings">Explore</a>
-          
-        </div>
-        <div class="navbar-nav ms-auto">
-          <form class="d-flex" role="search">
-            <input class="form-control me-2 mt-3 search-inp" type="search" placeholder="Search destinations" >
-            <button class="btn search-btn mt-3" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <div class="search-container">
+          <form class="search-form" action="/listings/search" method="GET">
+            <input class="search-inp" type="search" name="q" placeholder="Search destinations..." required>
+            <button class="search-btn" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
           </form>
         </div>
-        <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="/listings/new">Airbnb Your Home</a>
+
+        <div class="navbar-nav ms-auto user-menu">
+          <a class="host-link" href="/listings/new">
+            <i class="fa-solid fa-home"></i>
+            <span>Airbnb your home</span>
+          </a>
+          
           <% if (typeof currUser === "undefined" || !currUser) { %>
-
-            <a class="nav-link" href="/signup"><b>Sign up</b></a>
-            <a class="nav-link" href="/login"><b>Login</b></a>
-           <% } %>
-           <% if (typeof currUser !== "undefined" && currUser) { %>
-
-          <a class="nav-link" href="/logout"><b>Log out</b></a>
+            <a class="btn-auth btn-login" href="/login">Log in</a>
+            <a class="btn-auth btn-signup" href="/signup">Sign up</a>
+          <% } %>
+          
+          <% if (typeof currUser !== "undefined" && currUser) { %>
+            <div class="dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                <i class="fa-solid fa-user-circle"></i> <%= currUser.username %>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/logout">Log out</a></li>
+              </ul>
+            </div>
           <% } %>
         </div>
       </div>
     </div>
-  </nav>
+</nav>
