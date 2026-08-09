@@ -39,11 +39,13 @@ const dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/wanderlust";
 async function main() {
   await mongoose.connect(dbUrl);
 }
-main().then(() => {
-  console.log("Connected to DB");
-}).catch(err => {
-  console.error("DB connection error:", err);
-});
+main()
+  .then(() => {
+    console.log("Connected to DB");
+  })
+  .catch((err) => {
+    console.error("DB connection error:", err.message);
+  });
 
 // Mongo store
 const store = MongoStore.create({
