@@ -1,8 +1,193 @@
-<% layout("/layouts/boilerplate") %>
+<%- layout("/layouts/boilerplate") %>
 
-<div class="row mt-3">
-    <div class="alert alert-danger col-6 offset-3" role="alert">
-        <!-- <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg> -->
-        <p class="alert-heading"> <%= err.message %></p>
+<style>
+  .error-container {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  .error-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    padding: 4rem 3rem;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .error-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(135deg, #dc3434, #ff6b6b);
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, #dc3434, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+
+  .error-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  .error-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1rem;
+  }
+
+  .error-message {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-home {
+    background: linear-gradient(135deg, #dc3434, #c92a2a);
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 15px rgba(220, 52, 52, 0.3);
+  }
+
+  .btn-home:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(220, 52, 52, 0.4);
+    color: white;
+  }
+
+  .btn-back {
+    background: white;
+    color: #333;
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid #e0e0e0;
+  }
+
+  .btn-back:hover {
+    border-color: #dc3434;
+    color: #dc3434;
+    transform: translateY(-3px);
+  }
+
+  .suggestions {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .suggestions h6 {
+    color: #999;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+
+  .suggestion-links {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .suggestion-link {
+    background: #f8f9fa;
+    color: #555;
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+
+  .suggestion-link:hover {
+    background: #dc3434;
+    color: white;
+  }
+</style>
+
+<div class="error-container">
+  <div class="error-card">
+    <div class="error-icon">✈️</div>
+    <div class="error-code"><%= err.statusCode || 500 %></div>
+
+    <h2 class="error-title">
+      <% if (err.statusCode === 404) { %>
+        Destination Not Found
+      <% } else if (err.statusCode === 403) { %>
+        Access Denied
+      <% } else { %>
+        Something Went Wrong
+      <% } %>
+    </h2>
+
+    <p class="error-message">
+      <% if (err.statusCode === 404) { %>
+        Looks like this page took a detour. The destination you're looking for doesn't exist or may have moved.
+      <% } else if (err.statusCode === 403) { %>
+        You don't have permission to access this page. Please log in or go back.
+      <% } else { %>
+        <%= err.message || "An unexpected error occurred. Our team has been notified." %>
+      <% } %>
+    </p>
+
+    <div class="error-actions">
+      <a href="/listings" class="btn-home">
+        <i class="fas fa-home"></i> Explore Listings
+      </a>
+      <a href="javascript:history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Go Back
+      </a>
+    </div>
+
+    <div class="suggestions">
+      <h6>Quick Navigation</h6>
+      <div class="suggestion-links">
+        <a href="/listings" class="suggestion-link"><i class="fas fa-search"></i> Browse All</a>
+        <a href="/listings/new" class="suggestion-link"><i class="fas fa-plus"></i> Add Listing</a>
+        <a href="/login" class="suggestion-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="/signup" class="suggestion-link"><i class="fas fa-user-plus"></i> Sign Up</a>
       </div>
+    </div>
+  </div>
 </div>
