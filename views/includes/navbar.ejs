@@ -202,7 +202,10 @@
                 <i class="fa-solid fa-user-circle"></i> <%= currUser.username %>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="/logout">Log out</a></li>
+                <li><a class="dropdown-item" href="/bookings"><i class="fas fa-calendar-check"></i> My Bookings</a></li>
+                <li><a class="dropdown-item" href="/bookings/owner-dashboard"><i class="fas fa-chart-bar"></i> Owner Dashboard</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt"></i> Log out</a></li>
               </ul>
             </div>
           <% } %>

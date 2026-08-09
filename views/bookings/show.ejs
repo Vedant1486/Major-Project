@@ -1,0 +1,192 @@
+<%- layout("layouts/boilerplate") %>
+
+<style>
+  .booking-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    padding: 2.5rem;
+    max-width: 700px;
+    margin: 2rem auto;
+  }
+
+  .booking-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .booking-success-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 2rem;
+    color: white;
+  }
+
+  .booking-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #222;
+  }
+
+  .booking-id {
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  .listing-preview {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .listing-preview img {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .listing-preview h5 {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .listing-preview p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .booking-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .detail-box {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .detail-box label {
+    font-size: 0.8rem;
+    color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .detail-box p {
+    margin: 0.3rem 0 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #222;
+  }
+
+  .price-total {
+    background: linear-gradient(135deg, #dc3434, #c92a2a);
+    color: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+
+  .price-total .amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+
+  .price-breakdown {
+    opacity: 0.85;
+    font-size: 0.9rem;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .status-confirmed {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+  }
+</style>
+
+<div class="container">
+  <div class="booking-card">
+    <div class="booking-header">
+      <div class="booking-success-icon">
+        <i class="fas fa-check"></i>
+      </div>
+      <h2 class="booking-title">Booking Confirmed!</h2>
+      <p class="booking-id">Booking ID: #<%= booking._id %></p>
+      <span class="status-badge status-<%= booking.status %>">
+        <%= booking.status.charAt(0).toUpperCase() + booking.status.slice(1) %>
+      </span>
+    </div>
+
+    <div class="listing-preview">
+      <img src="<%= booking.listing.image?.url || '/images/default.jpg' %>" alt="<%= booking.listing.title %>">
+      <div>
+        <h5><%= booking.listing.title %></h5>
+        <p><i class="fas fa-map-marker-alt" style="color: #dc3434;"></i> <%= booking.listing.location %>, <%= booking.listing.country %></p>
+      </div>
+    </div>
+
+    <div class="booking-details">
+      <div class="detail-box">
+        <label>Check-in</label>
+        <p><%= booking.checkIn.toDateString() %></p>
+      </div>
+      <div class="detail-box">
+        <label>Check-out</label>
+        <p><%= booking.checkOut.toDateString() %></p>
+      </div>
+      <div class="detail-box">
+        <label>Guests</label>
+        <p><%= booking.guests %> guest<%= booking.guests > 1 ? 's' : '' %></p>
+      </div>
+      <div class="detail-box">
+        <label>Duration</label>
+        <p><%= booking.nights %> night<%= booking.nights > 1 ? 's' : '' %></p>
+      </div>
+    </div>
+
+    <div class="price-total">
+      <div class="price-breakdown">₹<%= Number(booking.listing.price).toLocaleString("en-IN") %> × <%= booking.nights %> nights</div>
+      <div class="amount">₹<%= Number(booking.totalPrice).toLocaleString("en-IN") %></div>
+      <div class="price-breakdown">Total Amount</div>
+    </div>
+
+    <div class="d-flex gap-2">
+      <a href="/listings/<%= booking.listing._id %>" class="btn btn-dark flex-grow-1">
+        <i class="fas fa-home"></i> View Listing
+      </a>
+      <a href="/bookings" class="btn btn-outline-secondary flex-grow-1">
+        <i class="fas fa-list"></i> My Bookings
+      </a>
+    </div>
+  </div>
+</div>

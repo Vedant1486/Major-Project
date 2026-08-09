@@ -1,0 +1,298 @@
+<%- layout("layouts/boilerplate") %>
+
+<style>
+  .dashboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .page-title::before {
+    content: "";
+    width: 5px;
+    height: 35px;
+    background: #dc3434;
+    border-radius: 10px;
+    display: inline-block;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-box {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+  }
+
+  .stat-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(220, 52, 52, 0.15);
+  }
+
+  .stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #dc3434;
+  }
+
+  .stat-label {
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .booking-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .booking-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(220, 52, 52, 0.15);
+  }
+
+  .booking-card-header {
+    background: linear-gradient(135deg, #dc3434, #c92a2a);
+    color: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .booking-card-header h5 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .booking-card-body {
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .booking-card-body img {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .guest-info h6 {
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 0.3rem;
+  }
+
+  .guest-info p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0.2rem 0;
+  }
+
+  .booking-meta p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0.2rem 0;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .status-confirmed { background: rgba(255,255,255,0.3); color: white; border: 1px solid rgba(255,255,255,0.5); }
+  .status-cancelled { background: #f8d7da; color: #721c24; }
+
+  .total-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #dc3434;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  }
+
+  .empty-state i {
+    font-size: 4rem;
+    color: #ddd;
+    margin-bottom: 1rem;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    padding: 0.5rem 1.2rem;
+    border-radius: 25px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: #333;
+    font-size: 0.9rem;
+  }
+
+  .filter-tab:hover, .filter-tab.active {
+    background: #dc3434;
+    border-color: #dc3434;
+    color: white;
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .booking-card-body { grid-template-columns: 1fr; }
+    .booking-card-body img { width: 100%; height: 150px; }
+  }
+</style>
+
+<div class="dashboard-container">
+  <h2 class="page-title">Owner Dashboard</h2>
+  <p class="text-muted mb-4">Manage bookings for your properties</p>
+
+  <%
+    const confirmed = bookings.filter(b => b.status === "confirmed");
+    const cancelled = bookings.filter(b => b.status === "cancelled");
+    const totalRevenue = confirmed.reduce((sum, b) => sum + b.totalPrice, 0);
+  %>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-icon">📅</div>
+      <div class="stat-value"><%= confirmed.length %></div>
+      <div class="stat-label">Active Bookings</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon">🏠</div>
+      <div class="stat-value"><%= listings.length %></div>
+      <div class="stat-label">Your Listings</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon">💰</div>
+      <div class="stat-value">₹<%= Number(totalRevenue).toLocaleString("en-IN") %></div>
+      <div class="stat-label">Total Revenue</div>
+    </div>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="filter-tabs">
+    <a href="#" class="filter-tab active" onclick="filterBookings('all')">All (<%= bookings.length %>)</a>
+    <a href="#" class="filter-tab" onclick="filterBookings('confirmed')">Confirmed (<%= confirmed.length %>)</a>
+    <a href="#" class="filter-tab" onclick="filterBookings('cancelled')">Cancelled (<%= cancelled.length %>)</a>
+  </div>
+
+  <!-- Bookings List -->
+  <% if (bookings.length === 0) { %>
+    <div class="empty-state">
+      <i class="fas fa-calendar-times"></i>
+      <h4>No bookings yet</h4>
+      <p class="text-muted">Once guests book your listings, you'll see them here!</p>
+      <a href="/listings" class="btn btn-dark mt-2">View Your Listings</a>
+    </div>
+  <% } else { %>
+    <% for (let booking of bookings) { %>
+      <% if (booking.listing && booking.user) { %>
+        <div class="booking-card" data-status="<%= booking.status %>">
+          <div class="booking-card-header">
+            <h5><i class="fas fa-home"></i> <%= booking.listing.title %></h5>
+            <span class="status-badge status-<%= booking.status %>">
+              <%= booking.status.charAt(0).toUpperCase() + booking.status.slice(1) %>
+            </span>
+          </div>
+
+          <div class="booking-card-body">
+            <img src="<%= booking.listing.image?.url || '/images/default.jpg' %>" alt="<%= booking.listing.title %>">
+
+            <div class="guest-info">
+              <h6><i class="fas fa-user" style="color: #dc3434;"></i> Guest Details</h6>
+              <p><strong><%= booking.user.username %></strong></p>
+              <p><i class="fas fa-envelope" style="color: #667eea;"></i> <%= booking.user.email || "No email" %></p>
+              <p><i class="fas fa-users" style="color: #764ba2;"></i> <%= booking.guests %> guest<%= booking.guests > 1 ? 's' : '' %></p>
+            </div>
+
+            <div class="booking-meta">
+              <p><i class="fas fa-calendar-check" style="color: #00b09b;"></i>
+                <strong>Check-in:</strong> <%= booking.checkIn.toDateString() %>
+              </p>
+              <p><i class="fas fa-calendar-times" style="color: #dc3434;"></i>
+                <strong>Check-out:</strong> <%= booking.checkOut.toDateString() %>
+              </p>
+              <p><i class="fas fa-moon" style="color: #764ba2;"></i>
+                <strong><%= booking.nights %> night<%= booking.nights > 1 ? 's' : '' %></strong>
+              </p>
+              <p class="total-price">₹<%= Number(booking.totalPrice).toLocaleString("en-IN") %></p>
+              <p style="color: #999; font-size: 0.8rem;">
+                Booked on <%= booking.createdAt.toDateString() %>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    <% } %>
+  <% } %>
+</div>
+
+<script>
+  function filterBookings(status) {
+    const cards = document.querySelectorAll('.booking-card');
+    const tabs = document.querySelectorAll('.filter-tab');
+
+    tabs.forEach(tab => tab.classList.remove('active'));
+    event.target.classList.add('active');
+
+    cards.forEach(card => {
+      if (status === 'all' || card.dataset.status === status) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>

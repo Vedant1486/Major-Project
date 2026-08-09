@@ -1,7 +1,6 @@
 mapboxgl.accessToken = mapToken;
 
-const coordinates = listing.geometry.coordinates;
-console.log("Map coordinates:", coordinates);
+const coordinates = listingData.geometry.coordinates;
 
 const map = new mapboxgl.Map({
     container: 'map',
@@ -11,9 +10,7 @@ const map = new mapboxgl.Map({
 });
 
 const marker = new mapboxgl.Marker({ color: 'red' })
-    .setLngLat(listing.geometry.coordinates)
+    .setLngLat(listingData.geometry.coordinates)
     .setPopup(new mapboxgl.Popup({ offset: 25 })
-    .setHTML(`<h4>${listing.title}</h4><p>Exact location will be provided after booking</p>`))
+    .setHTML(`<h4>${listingData.title}</h4><p>Exact location will be provided after booking</p>`))
     .addTo(map);
-
-   
